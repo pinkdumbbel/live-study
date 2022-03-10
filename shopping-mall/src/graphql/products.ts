@@ -12,8 +12,19 @@ export interface ProductsGraphql {
   products: ProductGraphql[];
 }
 
-const GET_PRODUCTS = gql`
+export const GET_PRODUCTS = gql`
   query GET_PRODUCTS {
+    id: string
+    imageUrl: string
+    price: number
+    title: string
+    description: string
+    createdAt: string
+  }
+`;
+
+export const GET_PRODUCT = gql`
+  query GET_PRODUCT($id: string) {
     id
     imageUrl
     price
@@ -22,5 +33,3 @@ const GET_PRODUCTS = gql`
     createdAt
   }
 `;
-
-export default GET_PRODUCTS;

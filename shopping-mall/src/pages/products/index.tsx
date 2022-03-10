@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import ProductItem from '../../components/product/item';
-import GET_PRODUCTS, {
+import {
+  GET_PRODUCTS,
   ProductGraphql,
   ProductsGraphql,
 } from '../../graphql/products';
