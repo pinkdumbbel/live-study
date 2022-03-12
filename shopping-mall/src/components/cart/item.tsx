@@ -1,7 +1,10 @@
 import { ForwardedRef, forwardRef, RefObject, SyntheticEvent } from 'react';
 import { QueryClient, useMutation } from 'react-query';
+import { useRecoilState } from 'recoil';
 import { UPDATE_CART, CartGraphql, DELETE_CART } from '../../graphql/cart';
 import { getClient, graphqlFetcher, QueryKeys } from '../../queryClient';
+import { checkedCartState } from '../../recolis/cart';
+import ItemInfo from './itemInfo';
 
 const CartItem = (
   { id, imageUrl, price, title, amount }: CartGraphql,
@@ -71,10 +74,9 @@ const CartItem = (
         className='cart-item__checkbox'
         name='select-item'
         ref={ref}
+        data-id={id}
       />
-      <img className='cart-item__image' src={imageUrl} />
-      <p className='cart-item__price'>{price}</p>
-      <p className='cart-item__title'>{title}</p>
+      <ItemInfo imageUrl={imageUrl} price={price} title={title} />
       <input
         type='number'
         className='cart-item__amount'

@@ -1,12 +1,14 @@
 import { gql } from 'graphql-tag';
 
-export type CartGraphql = {
+export interface CartGraphql {
   id: string;
   imageUrl: string;
   price: number;
   title: string;
   amount: number;
-};
+}
+
+export type CartInfo = Pick<CartGraphql, 'imageUrl' | 'price' | 'title'>;
 
 export const ADD_CART = gql`
   mutation ADD_CART($id: string) {

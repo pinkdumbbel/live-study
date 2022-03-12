@@ -5,12 +5,17 @@ body {
   margin: 0;
 }
 
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 #root {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 10px;
 }
-
 .gnb {
   ul {
     padding: 0;
