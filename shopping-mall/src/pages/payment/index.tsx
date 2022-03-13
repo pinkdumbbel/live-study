@@ -1,5 +1,7 @@
+import Payment from '../../components/payment';
+
 const PaymentPage = () => {
-  return <div className='payment'>결제하기</div>;
+  return <Payment />;
 };
 
 export default PaymentPage;
