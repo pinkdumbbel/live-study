@@ -1,5 +1,5 @@
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { CartGraphql } from '../../graphql/cart';
 import { checkedCartState } from '../../recolis/cart';
 import { useNavigate } from 'react-router-dom';

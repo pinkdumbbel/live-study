@@ -7,6 +7,7 @@ import {
   GET_CART,
   UPDATE_CART,
 } from '../graphql/cart';
+import { DELETE_SUCCESS_PAYMENT_ITEMS } from '../graphql/payment';
 import { GET_PRODUCT, GET_PRODUCTS } from '../graphql/products';
 const mockProducts = (() =>
   Array.from({ length: 20 }).map((_, i) => ({
@@ -83,4 +84,18 @@ export const handlers = [
 
     return res(ctx.data(id));
   }),
+
+  graphql.mutation(
+    DELETE_SUCCESS_PAYMENT_ITEMS,
+    ({ variables: { ids } }, res, ctx) => {
+      const newCartData = { ...cartData };
+      ids.forEach((id: string) => {
+        delete newCartData[id];
+      });
+
+      cartData = newCartData;
+
+      return res(ctx.data(ids));
+    }
+  ),
 ];
