@@ -20,6 +20,7 @@ const Payment = () => {
       }),
     {
       onSuccess: () => {
+        alert('결제가 완료 되었습니다.');
         setCheckedCartItems([]);
       },
     }

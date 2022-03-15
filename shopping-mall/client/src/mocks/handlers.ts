@@ -1,5 +1,4 @@
 import { graphql } from 'msw';
-import { v4 as uuid } from 'uuid';
 import {
   ADD_CART,
   CartGraphql,
@@ -12,7 +11,8 @@ import { GET_PRODUCT, GET_PRODUCTS } from '../graphql/products';
 const mockProducts = (() =>
   Array.from({ length: 20 }).map((_, i) => ({
     id: i + 1 + '',
-    imageUrl: `https://placeimg.com/200/150/${i + 1}`,
+    /* imageUrl: `https://placeimg.com/200/150/${i + 1}`, */
+    imageUrl: `https://picsum.photos/id/870/200/300?grayscale&blur=2`,
     price: 50000,
     title: `샘플상품${i + 1}`,
     description: `샘플상품상세정보${i + 1}`,
