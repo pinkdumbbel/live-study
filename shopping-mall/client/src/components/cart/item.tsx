@@ -1,13 +1,11 @@
-import { ForwardedRef, forwardRef, RefObject, SyntheticEvent } from 'react';
-import { QueryClient, useMutation } from 'react-query';
-import { useRecoilState } from 'recoil';
+import { ForwardedRef, forwardRef, SyntheticEvent } from 'react';
+import { useMutation } from 'react-query';
 import { UPDATE_CART, CartGraphql, DELETE_CART } from '../../graphql/cart';
 import { getClient, graphqlFetcher, QueryKeys } from '../../queryClient';
-import { checkedCartState } from '../../recolis/cart';
 import ItemInfo from './itemInfo';
 
 const CartItem = (
-  { id, imageUrl, price, title, amount }: CartGraphql,
+  { id, product: { imageUrl, price, title }, amount }: CartGraphql,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const queryClient = getClient();
@@ -17,34 +15,37 @@ const CartItem = (
       graphqlFetcher(UPDATE_CART, { id, amount }),
     {
       onMutate: async ({ id, amount }) => {
-        const prevCart = queryClient.getQueryData<{
-          [key: string]: CartGraphql;
+        const { cart: prevCart } = queryClient.getQueryData<{
+          cart: CartGraphql[];
         }>(QueryKeys.CART);
+        const updateCartIdx = prevCart.findIndex((cart) => cart.id === id);
 
-        if (!prevCart?.[id]) return prevCart;
-        const newCart = {
-          ...(prevCart || {}),
-          [id]: {
-            ...prevCart[id],
-            amount,
-          },
-        };
+        if (!prevCart || updateCartIdx < 0) return prevCart;
 
-        queryClient.setQueryData(QueryKeys.CART, newCart);
+        const newCart = [...prevCart];
+        newCart.splice(updateCartIdx, 1, {
+          ...prevCart[updateCartIdx],
+          amount,
+        });
 
-        return prevCart;
+        queryClient.setQueryData(QueryKeys.CART, { cart: newCart });
+
+        return newCart;
       },
-      onSuccess: (newCartItem) => {
-        const prevCart = queryClient.getQueryData<{
-          [key: string]: CartGraphql;
+      onSuccess: ({ updateCart }) => {
+        const { cart: prevCart } = queryClient.getQueryData<{
+          cart: CartGraphql[];
         }>(QueryKeys.CART);
 
-        const newCart = {
-          ...(prevCart || {}),
-          [id]: newCartItem,
-        };
+        const updateCartIdx = prevCart.findIndex(
+          (cart) => cart.id === updateCart.id
+        );
 
-        queryClient.setQueryData(QueryKeys.CART, newCart);
+        if (!prevCart || updateCartIdx < 0) return;
+
+        const newCart = [...prevCart];
+        newCart.splice(updateCartIdx, 1, updateCart);
+        queryClient.setQueryData(QueryKeys.CART, { cart: newCart });
       },
     }
   );
@@ -61,6 +62,7 @@ const CartItem = (
   const handleUpdateAmount = (e: SyntheticEvent) => {
     const amount = Number((e.target as HTMLInputElement).value);
     if (amount < 1) return;
+    console.log(id, amount);
     updateCart({ id, amount });
   };
 

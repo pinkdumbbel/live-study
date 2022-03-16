@@ -4,7 +4,6 @@ import { useRecoilState } from 'recoil';
 import { ADD_CART } from '../../graphql/cart';
 import { ProductGraphql } from '../../graphql/products';
 import { graphqlFetcher, QueryKeys } from '../../queryClient';
-import { cartItemSelector } from '../../recolis/cart';
 
 const ProductItem = ({
   id,

@@ -9,7 +9,7 @@ const CartPage = () => {
     staleTime: 0,
   });
 
-  const cartItems = Object.values(data || {}) as CartGraphql[];
+  const cartItems = (data?.cart || []) as CartGraphql[];
 
   if (!cartItems.length) return <div>장바구니가 비었어요</div>;
 

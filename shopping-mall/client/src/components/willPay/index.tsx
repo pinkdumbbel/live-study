@@ -12,22 +12,24 @@ const WillPay = ({
 }) => {
   const checkedItems = useRecoilValue(checkedCartState);
 
-  const sum = checkedItems.reduce((prev, cur) => {
-    return (prev += cur.price * cur.amount);
+  const sum = checkedItems.reduce((prev, { product: { price }, amount }) => {
+    return (prev += price * amount);
   }, 0);
 
   return (
     <div className='cart-willpay'>
       <ul>
-        {checkedItems.map(({ imageUrl, price, title, id, amount }) => {
-          return (
-            <li key={id}>
-              <ItemInfo imageUrl={imageUrl} price={price} title={title} />
-              <p>수량: {amount}</p>
-              <p>금액: {price * amount}</p>
-            </li>
-          );
-        })}
+        {checkedItems.map(
+          ({ product: { imageUrl, price, title }, id, amount }) => {
+            return (
+              <li key={id}>
+                <ItemInfo imageUrl={imageUrl} price={price} title={title} />
+                <p>수량: {amount}</p>
+                <p>금액: {price * amount}</p>
+              </li>
+            );
+          }
+        )}
       </ul>
       <p>총 예상 결제액: {sum}</p>
       <button onClick={handleSubmit}>{subTitle}</button>
