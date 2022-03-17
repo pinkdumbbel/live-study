@@ -1,12 +1,17 @@
-import { ProductGraphql } from '../../graphql/products';
+import { ProductGraphql, ProductsGraphql } from '../../graphql/products';
 import ProductItem from './item';
 
-const ProductList = ({ productList }: { productList: ProductGraphql[] }) => {
+const ProductList = ({ productList }: { productList: ProductsGraphql[] }) => {
   return (
     <ul className='products'>
-      {productList?.map((product: ProductGraphql) => {
+      {productList.map((page) =>
+        page.products.map((product) => {
+          return <ProductItem key={product.id} {...product} />;
+        })
+      )}
+      {/* {productList.products.map((product: ProductGraphql) => {
         return <ProductItem key={product.id} {...product} />;
-      })}
+      })} */}
     </ul>
   );
 };

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import MainPage from './pages';
+import AdminPage from './pages/admin';
 import CartPage from './pages/cart';
 import PaymentPage from './pages/payment';
 import ProductsList from './pages/products';
@@ -13,6 +14,7 @@ const AppRouter = () => {
       <Route path='/products/:id' element={<ProductDetailPage />}></Route>
       <Route path='/cart' element={<CartPage />}></Route>
       <Route path='/payment' element={<PaymentPage />}></Route>
+      <Route path='/admin' element={<AdminPage />}></Route>
     </Routes>
   );
 };

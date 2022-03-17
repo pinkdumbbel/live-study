@@ -13,14 +13,14 @@ export interface ProductsGraphql {
 }
 
 export const GET_PRODUCTS = gql`
-  query GET_PRODUCTS {
-    products {
+  query GET_PRODUCTS($cursor: Int!) {
+    products(cursor: $cursor) {
       id
       imageUrl
       price
+      title
       description
       createdAt
-      title
     }
   }
 `;
