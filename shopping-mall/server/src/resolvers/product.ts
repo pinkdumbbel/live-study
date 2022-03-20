@@ -6,19 +6,21 @@ const setJSON = (data: Products) => writeDB(DBField.PRODUCTS, data);
 
 const productResolver: Resolver = {
   Query: {
-    products: (_, { cursor = 0 }, { db }) => {
-      const products = db.products.slice(cursor, cursor + 15);
+    products: (_, { cursor = 0, showDeleted = false }, { db }) => {
+      const filteredDB = showDeleted
+        ? db.products
+        : db.products.filter((product) => !!product.createdAt);
+      const products = filteredDB.slice(cursor, cursor + 15);
       return products;
     },
     product: (parent, { id }, { db }, info) => {
       const found = db.products.find((item) => item.id === id);
-      console.log(found);
       if (found) return found;
       return null;
     },
   },
   Mutation: {
-    addProduct: (parent, { price, title, description, imageUrl }, { db }) => {
+    addProduct: (_, { price, title, description, imageUrl }, { db }) => {
       const newProduct = {
         id: uuid(),
         imageUrl,
@@ -33,7 +35,7 @@ const productResolver: Resolver = {
 
       return newProduct;
     },
-    updateProduct: (parent, { id, ...data }, { db }) => {
+    updateProduct: (_, { id, ...data }, { db }) => {
       const existProductItemIdx = db.products.findIndex(
         (item) => item.id === id
       );
@@ -51,7 +53,7 @@ const productResolver: Resolver = {
       setJSON(db.products);
       return updateProduct;
     },
-    deleteProduct: (parent, { id }, { db }) => {
+    deleteProduct: (_, { id }, { db }) => {
       const existProductItemIdx = db.products.findIndex(
         (item) => item.id === id
       );

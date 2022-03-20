@@ -1,28 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import ProductItem from '../../components/product/item';
 import ProductList from '../../components/product/list';
 import { GET_PRODUCTS, ProductsGraphql } from '../../graphql/products';
 import useIntersection from '../../hooks/useIntersection';
 import { graphqlFetcher, QueryKeys } from '../../queryClient';
 
 const ProductsListPage = () => {
-  const observerRef = useRef<IntersectionObserver>();
   const fetchMoreRef = useRef<HTMLDivElement>();
 
   const intersecting = useIntersection(fetchMoreRef);
-  /*   const getObserver = useCallback(() => {
-    if (!observerRef.current) {
-      observerRef.current = new IntersectionObserver((entries) => {
-        setIntersecting(entries.some((entry) => entry.isIntersecting));
-      });
-    }
-
-    return observerRef.current;
-  }, [observerRef.current]); */
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteQuery<ProductsGraphql>(
-      QueryKeys.PRODUCTS,
+      [QueryKeys.PRODUCTS, false],
       ({ pageParam = 0 }) =>
         graphqlFetcher(GET_PRODUCTS, { cursor: pageParam }),
       {
@@ -46,7 +37,7 @@ const ProductsListPage = () => {
   return (
     <div>
       <h2>상품목록</h2>
-      <ProductList productList={data?.pages || []} />
+      <ProductList productList={data?.pages || []} Item={ProductItem} />
       <div ref={fetchMoreRef}></div>
     </div>
   );
