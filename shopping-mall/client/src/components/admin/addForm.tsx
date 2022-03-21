@@ -1,59 +1,47 @@
 import { SyntheticEvent } from 'react';
 import { useMutation } from 'react-query';
 import { CartGraphql, UPDATE_CART } from '../../graphql/cart';
-import { ADD_PRODUCT } from '../../graphql/products';
+import {
+  ADD_PRODUCT,
+  ProductGraphql,
+  ProductsGraphql,
+} from '../../graphql/products';
 import { getClient, graphqlFetcher, QueryKeys } from '../../queryClient';
+import arrToObj from '../../util/arrToObj';
 
+type OmittedProduct = Omit<ProductGraphql, 'id' | 'createAt'>;
 const AddForm = () => {
   const queryClient = getClient();
 
   const { mutate: addProduct } = useMutation(
-    ({ id, amount }: { id: string; amount: number }) =>
-      graphqlFetcher(ADD_PRODUCT, { id, amount })
-  );
-  /* {
-      onMutate: async ({ id, amount }) => {
-        const { cart: prevCart } = queryClient.getQueryData<{
-          cart: CartGraphql[];
-        }>(QueryKeys.CART);
-        const updateCartIdx = prevCart.findIndex((cart) => cart.id === id);
-
-        if (!prevCart || updateCartIdx < 0) return prevCart;
-
-        const newCart = [...prevCart];
-        newCart.splice(updateCartIdx, 1, {
-          ...prevCart[updateCartIdx],
-          amount,
+    ({ title, imageUrl, price, description }: OmittedProduct) =>
+      graphqlFetcher(ADD_PRODUCT, { title, imageUrl, price, description }),
+    {
+      onSuccess: ({ addProduct }) => {
+        queryClient.invalidateQueries(QueryKeys.PRODUCTS, {
+          exact: false,
+          refetchInactive: true,
         });
+        /* const data = queryClient.getQueriesData<{
+          pageParams: (undefined | number)[];
+          pages: ProductsGraphql[];
+        }>([QueryKeys.PRODUCTS, 'admin']);
 
-        queryClient.setQueryData(QueryKeys.CART, { cart: newCart });
+        const [queryKey, { pageParams, pages }] = data[0];
 
-        return newCart;
-      },
-      onSuccess: ({ updateCart }) => {
-        const { cart: prevCart } = queryClient.getQueryData<{
-          cart: CartGraphql[];
-        }>(QueryKeys.CART);
+        const newProduct = [...pages];
+        newProduct[0].products = [addProduct, ...newProduct[0].products];
 
-        const updateCartIdx = prevCart.findIndex(
-          (cart) => cart.id === updateCart.id
-        );
-
-        if (!prevCart || updateCartIdx < 0) return;
-
-        const newCart = [...prevCart];
-        newCart.splice(updateCartIdx, 1, updateCart);
-        queryClient.setQueryData(QueryKeys.CART, { cart: newCart });
+        queryClient.setQueriesData(queryKey, { pageParams, pages: newProduct }); */
       },
     }
   );
- */
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-
-    console.dir([...formData]);
+    const formData = arrToObj([...new FormData(e.target as HTMLFormElement)]);
+    formData.price = Number(formData.price);
+    addProduct(formData as OmittedProduct);
   };
 
   return (

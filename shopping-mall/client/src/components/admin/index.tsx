@@ -1,21 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import ProductItem from '../../components/product/item';
-import ProductList from '../../components/product/list';
 import { GET_PRODUCTS, ProductsGraphql } from '../../graphql/products';
 import useIntersection from '../../hooks/useIntersection';
 import { graphqlFetcher, QueryKeys } from '../../queryClient';
+import AddForm from './addForm';
+import AdminList from './list';
 
-const ProductsListPage = () => {
+const Admin = () => {
   const fetchMoreRef = useRef<HTMLDivElement>();
-
   const intersecting = useIntersection(fetchMoreRef);
+
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteQuery<ProductsGraphql>(
-      [QueryKeys.PRODUCTS, 'product'],
+      [QueryKeys.PRODUCTS, 'admin'],
       ({ pageParam = 0 }) =>
-        graphqlFetcher(GET_PRODUCTS, { cursor: pageParam }),
+        graphqlFetcher(GET_PRODUCTS, { cursor: pageParam, showDeleted: true }),
       {
         getNextPageParam: (_, pages) => {
           const nextCursor = pages.reduce((prev, cur) => {
@@ -23,11 +24,14 @@ const ProductsListPage = () => {
               ? prev + cur.products.length
               : cur.products.length;
           }, 0);
-
           return nextCursor === 0 ? false : nextCursor;
         },
       }
     );
+
+  const doneEdit = () => {
+    setEditingIndex(null);
+  };
   useEffect(() => {
     if (!intersecting || !hasNextPage || isFetchingNextPage || !isSuccess)
       return;
@@ -35,12 +39,17 @@ const ProductsListPage = () => {
   }, [intersecting]);
 
   return (
-    <div>
-      <h2>상품목록</h2>
-      <ProductList productList={data?.pages || []} />
+    <>
+      <AddForm />
+      <AdminList
+        productList={data?.pages || []}
+        editingIndex={editingIndex}
+        setEditingIndex={setEditingIndex}
+        doneEdit={doneEdit}
+      />
       <div ref={fetchMoreRef} style={{ height: '1px' }}></div>
-    </div>
+    </>
   );
 };
 
-export default ProductsListPage;
+export default Admin;

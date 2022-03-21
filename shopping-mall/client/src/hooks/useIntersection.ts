@@ -23,7 +23,6 @@ const useIntersection = (fetchMoreRef: MutableRefObject<HTMLDivElement>) => {
   useEffect(() => {
     getObserver().observe(fetchMoreRef.current);
   }, [fetchMoreRef.current]);
-
   return intersecting;
 };
 

@@ -39,30 +39,57 @@ export const GET_PRODUCT = gql`
 `;
 
 export const ADD_PRODUCT = gql`
-  query ADD_PRODUCT($title: String!, $imageUrl: String!, $price: Int!, $description: String!){
+  mutation ADD_PRODUCT(
+    $title: String!
+    $imageUrl: String!
+    $price: Int!
+    $description: String!
+  ) {
     addProduct(
-      imageUrl: $imageUrl!
-      price: $price!
-      title: $title!
-      description: $description!
-    ): Product!
-  }
-`;
-
-export const UPDATE_PROCUT = gql` 
-  query UPDATE_PROCUT($id: ID!, $title: String, $imageUrl: String, $price: Int, $description: String){
-    updateProduct(
-      id: $id!
       imageUrl: $imageUrl
       price: $price
       title: $title
       description: $description
-    ): Product!
+    ) {
+      id
+      imageUrl
+      price
+      title
+      description
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_PROCUT = gql`
+  mutation UPDATE_PROCUT(
+    $id: ID!
+    $title: String
+    $imageUrl: String
+    $price: Int
+    $description: String
+  ) {
+    updateProduct(
+      id: $id
+      imageUrl: $imageUrl
+      price: $price
+      title: $title
+      description: $description
+    ) {
+      id
+      imageUrl
+      price
+      title
+      description
+      createdAt
+    }
   }
 `;
 
 export const DELETE_PRODUCT = gql`
-  query DELETE_PRODUCT($id: ID!) {
-    deleteProduct(id: ID!): ID!
+  mutation DELETE_PRODUCT($id: ID!) {
+    deleteProduct(id: $id) {
+      id
+    }
   }
 `;
