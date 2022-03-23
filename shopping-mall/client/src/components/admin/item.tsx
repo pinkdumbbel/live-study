@@ -1,9 +1,14 @@
 import { SyntheticEvent } from 'react';
-import { QueryClient, useMutation } from 'react-query';
+import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
-import { ADD_CART } from '../../graphql/cart';
-import { ProductGraphql, UPDATE_PROCUT } from '../../graphql/products';
+import { useSetRecoilState } from 'recoil';
+import {
+  DELETE_PRODUCT,
+  ProductGraphql,
+  UPDATE_PROCUT,
+} from '../../graphql/products';
 import { getClient, graphqlFetcher, QueryKeys } from '../../queryClient';
+import { checkedCartState } from '../../recolis/cart';
 import arrToObj from '../../util/arrToObj';
 
 const AdminItem = ({
@@ -38,25 +43,28 @@ const AdminItem = ({
         description,
       }),
     {
-      onSuccess: ({ updateProduct }) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(QueryKeys.PRODUCTS, {
           exact: false,
           refetchInactive: true,
         });
 
         doneEdit();
+      },
+    }
+  );
 
-        /* const data = queryClient.getQueriesData<{
-          pageParams: (undefined | number)[];
-          pages: ProductsGraphql[];
-        }>([QueryKeys.PRODUCTS, 'admin']);
-
-        const [queryKey, { pageParams, pages }] = data[0];
-
-        const newProduct = [...pages];
-        newProduct[0].products = [addProduct, ...newProduct[0].products];
-
-        queryClient.setQueriesData(queryKey, { pageParams, pages: newProduct }); */
+  const { mutate: deleteProduct } = useMutation(
+    ({ id }: Pick<ProductGraphql, 'id'>) => {
+      return graphqlFetcher(DELETE_PRODUCT, { id });
+    },
+    {
+      //deleteProduct는 삭제된 상품의 id
+      onSuccess: ({ deleteProduct }) => {
+        queryClient.invalidateQueries(QueryKeys.PRODUCTS, {
+          exact: false,
+          refetchInactive: true,
+        });
       },
     }
   );
@@ -68,6 +76,9 @@ const AdminItem = ({
     updateProduct(formData as Omit<ProductGraphql, 'createAt'>);
   };
 
+  const onDlete = () => {
+    deleteProduct({ id });
+  };
   if (isEditing) {
     return (
       <li className='product-item'>
@@ -112,9 +123,8 @@ const AdminItem = ({
         <span className='product-item__price'>₩{price}</span>
       </Link>
       {!createdAt && <span>삭제된 상품</span>}
-      <button className='product-item__add-cart' onClick={setEditingIndex}>
-        수정
-      </button>
+      <button onClick={setEditingIndex}>수정</button>
+      <button onClick={onDlete}>삭제</button>
     </li>
   );
 };

@@ -11,23 +11,31 @@ const CartList = ({ items }: { items: CartGraphql[] }) => {
     useRecoilState(checkedCartState);
   const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState<FormData>();
-  const checkboxRefs = items.map(() => createRef<HTMLInputElement>());
+  const checkboxRefs = items.map(() => {
+    return createRef<HTMLInputElement>();
+  });
 
   const navigate = useNavigate();
+  const enabledProduct = items.filter((item) => item.product.createdAt);
 
   const setAllCheckedFromitems = () => {
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
     const selectedCount = formData.getAll('select-item').length;
-    const allChecked = selectedCount === items.length;
+    const allChecked = selectedCount === enabledProduct.length;
     formRef.current.querySelector<HTMLInputElement>('.select-all')!.checked =
       allChecked;
   };
 
   const setItemsCheckedFromAll = (targetInput: HTMLInputElement) => {
     const allChecked = targetInput.checked;
+    const deletedProductIds = items
+      .filter((item) => !item.product.createdAt)
+      .map((item) => item.product.id);
+
     checkboxRefs.forEach((checkboxEl) => {
-      checkboxEl.current!.checked = allChecked;
+      if (!deletedProductIds.includes(checkboxEl.current?.dataset.id))
+        checkboxEl.current!.checked = allChecked;
     });
   };
 

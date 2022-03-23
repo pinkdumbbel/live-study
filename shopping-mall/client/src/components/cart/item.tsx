@@ -5,7 +5,7 @@ import { getClient, graphqlFetcher, QueryKeys } from '../../queryClient';
 import ItemInfo from './itemInfo';
 
 const CartItem = (
-  { id, product: { imageUrl, price, title }, amount }: CartGraphql,
+  { id, product: { imageUrl, price, title, createdAt }, amount }: CartGraphql,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const queryClient = getClient();
@@ -69,6 +69,7 @@ const CartItem = (
   const heandleDeleteImte = () => {
     deleteCart({ id });
   };
+
   return (
     <li className='cart-item'>
       <input
@@ -77,14 +78,20 @@ const CartItem = (
         name='select-item'
         ref={ref}
         data-id={id}
+        disabled={!createdAt}
       />
       <ItemInfo imageUrl={imageUrl} price={price} title={title} />
-      <input
-        type='number'
-        className='cart-item__amount'
-        value={amount}
-        onChange={handleUpdateAmount}
-      />
+      {createdAt ? (
+        <input
+          type='number'
+          className='cart-item__amount'
+          value={amount}
+          onChange={handleUpdateAmount}
+        />
+      ) : (
+        <div>삭제된 상품입니다.</div>
+      )}
+
       <button
         type='button'
         className='cart-item__delete-btn'

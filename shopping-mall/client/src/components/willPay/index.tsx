@@ -12,9 +12,13 @@ const WillPay = ({
 }) => {
   const checkedItems = useRecoilValue(checkedCartState);
 
-  const sum = checkedItems.reduce((prev, { product: { price }, amount }) => {
-    return (prev += price * amount);
-  }, 0);
+  const sum = checkedItems.reduce(
+    (prev, { product: { price, createdAt }, amount }) => {
+      if (createdAt) prev += price * amount;
+      return prev;
+    },
+    0
+  );
 
   return (
     <div className='cart-willpay'>
