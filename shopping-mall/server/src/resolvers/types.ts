@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore/lite';
+
 export type Resolver = {
   [k: string]: {
     [key: string]: (
