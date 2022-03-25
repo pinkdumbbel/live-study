@@ -11,7 +11,7 @@ const productSchema = gql`
   }
 
   extend type Query {
-    products(cursor: Int!, showDeleted: Boolean): [Product!]
+    products(cursor: ID!, showDeleted: Boolean): [Product!]
     product(id: ID!): Product!
   }
 

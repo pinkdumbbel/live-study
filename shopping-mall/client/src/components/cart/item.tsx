@@ -51,7 +51,7 @@ const CartItem = (
   );
 
   const { mutate: deleteCart } = useMutation(
-    ({ id }: { id: string }) => graphqlFetcher(DELETE_CART, { id }),
+    ({ id }: { id: string }) => graphqlFetcher(DELETE_CART, { cartId: id }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QueryKeys.CART);
@@ -66,7 +66,7 @@ const CartItem = (
     updateCart({ id, amount });
   };
 
-  const heandleDeleteImte = () => {
+  const heandleDeleteItem = () => {
     deleteCart({ id });
   };
 
@@ -95,7 +95,7 @@ const CartItem = (
       <button
         type='button'
         className='cart-item__delete-btn'
-        onClick={heandleDeleteImte}
+        onClick={heandleDeleteItem}
       >
         삭제
       </button>

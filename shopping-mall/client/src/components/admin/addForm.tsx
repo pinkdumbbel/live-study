@@ -17,7 +17,7 @@ const AddForm = () => {
     ({ title, imageUrl, price, description }: OmittedProduct) =>
       graphqlFetcher(ADD_PRODUCT, { title, imageUrl, price, description }),
     {
-      onSuccess: ({ addProduct }) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(QueryKeys.PRODUCTS, {
           exact: false,
           refetchInactive: true,

@@ -15,16 +15,11 @@ const Admin = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteQuery<ProductsGraphql>(
       [QueryKeys.PRODUCTS, 'admin'],
-      ({ pageParam = 0 }) =>
+      ({ pageParam = '' }) =>
         graphqlFetcher(GET_PRODUCTS, { cursor: pageParam, showDeleted: true }),
       {
-        getNextPageParam: (_, pages) => {
-          const nextCursor = pages.reduce((prev, cur) => {
-            return cur.products.length > 0
-              ? prev + cur.products.length
-              : cur.products.length;
-          }, 0);
-          return nextCursor === 0 ? false : nextCursor;
+        getNextPageParam: (lastPage) => {
+          return lastPage.products[lastPage.products.length - 1]?.id;
         },
       }
     );
@@ -47,7 +42,7 @@ const Admin = () => {
         setEditingIndex={setEditingIndex}
         doneEdit={doneEdit}
       />
-      <div ref={fetchMoreRef} style={{ height: '1px' }}></div>
+      <div ref={fetchMoreRef} /* style={{ height: '1px' }} */></div>
     </>
   );
 };

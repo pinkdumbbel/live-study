@@ -1,5 +1,4 @@
-import { Cart, CartItem, Product, Resolver } from './types';
-import { DBField, writeDB } from '../dbController';
+import { Product, Resolver } from './types';
 import {
   addDoc,
   collection,
@@ -14,8 +13,6 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
-
-const setJSON = (data: Cart) => writeDB(DBField.CART, data);
 
 const cartResolver: Resolver = {
   Query: {
@@ -87,30 +84,7 @@ const cartResolver: Resolver = {
       await deleteDoc(cartRef);
       return cartId;
     },
-
-    /* executePay: async (_, { ids }) => {
-      const deleted = [];
-
-      for await (const id of ids) {
-        const cartRef = doc(db, 'cart', id);
-        const cartSnap = await getDoc(cartRef);
-        const cartData = cartSnap.data();
-        const productRef = cartData?.product;
-        const product = (await getDoc(productRef)).data() as Product;
-
-        console.log(productRef);
-        if (!productRef) throw new Error('상품이 존재하지 않습니다.');
-
-        if (product.createdAt) {
-          await deleteDoc(cartRef);
-          deleted.push(id);
-        }
-      }
-      return deleted;
-    }, */
     executePay: async (_, { ids }) => {
-      // createdAt이 비어있지 않은 ids들에 대해서 결제처리가 완료되었다고 가정하고
-      // cart에서 이들 ids를 지워준다.
       const deleted = [];
       for await (const id of ids) {
         const cartRef = doc(db, 'cart', id);

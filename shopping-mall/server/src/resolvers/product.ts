@@ -1,6 +1,4 @@
-import { Products, Resolver } from './types';
-import { v4 as uuid } from 'uuid';
-import { DBField, writeDB } from '../dbController';
+import { Resolver } from './types';
 import {
   addDoc,
   collection,
@@ -19,15 +17,17 @@ import {
 import { db } from '../../firebase';
 
 const PAGE_SIZE = 15;
-const setJSON = (data: Products) => writeDB(DBField.PRODUCTS, data);
 
 const productResolver: Resolver = {
   Query: {
-    products: async (_, { cursor = 0, showDeleted = false }) => {
+    products: async (_, { cursor = '', showDeleted = false }) => {
       const products = collection(db, 'products');
       const queryOptions = [orderBy('createdAt', 'desc')];
 
-      if (cursor) queryOptions.push(startAfter(cursor));
+      if (cursor) {
+        const snapshot = await getDoc(doc(db, 'products', cursor));
+        queryOptions.push(startAfter(snapshot));
+      }
       if (!showDeleted) queryOptions.unshift(where('createdAt', '!=', null));
 
       const q = query(products, ...queryOptions, limit(PAGE_SIZE));

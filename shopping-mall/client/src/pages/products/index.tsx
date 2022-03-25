@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import ProductItem from '../../components/product/item';
 import ProductList from '../../components/product/list';
 import { GET_PRODUCTS, ProductsGraphql } from '../../graphql/products';
 import useIntersection from '../../hooks/useIntersection';
@@ -14,17 +13,11 @@ const ProductsListPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteQuery<ProductsGraphql>(
       [QueryKeys.PRODUCTS, 'product'],
-      ({ pageParam = 0 }) =>
+      ({ pageParam = '' }) =>
         graphqlFetcher(GET_PRODUCTS, { cursor: pageParam }),
       {
-        getNextPageParam: (_, pages) => {
-          const nextCursor = pages.reduce((prev, cur) => {
-            return cur.products.length > 0
-              ? prev + cur.products.length
-              : cur.products.length;
-          }, 0);
-
-          return nextCursor === 0 ? false : nextCursor;
+        getNextPageParam: (lastPage) => {
+          return lastPage.products[lastPage.products.length - 1]?.id;
         },
       }
     );
@@ -38,7 +31,7 @@ const ProductsListPage = () => {
     <div>
       <h2>상품목록</h2>
       <ProductList productList={data?.pages || []} />
-      <div ref={fetchMoreRef} style={{ height: '1px' }}></div>
+      <div ref={fetchMoreRef} /* style={{ height: '1px' }} */></div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ export interface ProductsGraphql {
 }
 
 export const GET_PRODUCTS = gql`
-  query GET_PRODUCTS($cursor: Int!, $showDeleted: Boolean) {
+  query GET_PRODUCTS($cursor: ID!, $showDeleted: Boolean) {
     products(cursor: $cursor, showDeleted: $showDeleted) {
       id
       imageUrl
