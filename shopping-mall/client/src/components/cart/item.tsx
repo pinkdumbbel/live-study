@@ -17,7 +17,7 @@ const CartItem = (
       onMutate: async ({ id, amount }) => {
         const { cart: prevCart } = queryClient.getQueryData<{
           cart: CartGraphql[];
-        }>(QueryKeys.CART);
+        }>(QueryKeys.CART) || { cart: [] };
         const updateCartIdx = prevCart.findIndex((cart) => cart.id === id);
 
         if (!prevCart || updateCartIdx < 0) return prevCart;
@@ -35,7 +35,7 @@ const CartItem = (
       onSuccess: ({ updateCart }) => {
         const { cart: prevCart } = queryClient.getQueryData<{
           cart: CartGraphql[];
-        }>(QueryKeys.CART);
+        }>(QueryKeys.CART) || { cart: [] };
 
         const updateCartIdx = prevCart.findIndex(
           (cart) => cart.id === updateCart.id

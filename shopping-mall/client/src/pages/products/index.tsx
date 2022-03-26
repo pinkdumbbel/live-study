@@ -6,7 +6,7 @@ import useIntersection from '../../hooks/useIntersection';
 import { graphqlFetcher, QueryKeys } from '../../queryClient';
 
 const ProductsListPage = () => {
-  const fetchMoreRef = useRef<HTMLDivElement>();
+  const fetchMoreRef = useRef<HTMLDivElement>(null);
 
   const intersecting = useIntersection(fetchMoreRef);
 

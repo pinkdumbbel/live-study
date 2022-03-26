@@ -29,14 +29,11 @@ const CartList = ({ items }: { items: CartGraphql[] }) => {
 
   const setItemsCheckedFromAll = (targetInput: HTMLInputElement) => {
     const allChecked = targetInput.checked;
-    const deletedProductIds = items
-      .filter((item) => !item.product.createdAt)
-      .map((item) => item.product.id);
-
-    checkboxRefs.forEach((checkboxEl) => {
-      if (!deletedProductIds.includes(checkboxEl.current?.dataset.id))
-        checkboxEl.current!.checked = allChecked;
-    });
+    checkboxRefs
+      .filter((elem) => !elem.current?.disabled)
+      .forEach((elem) => {
+        elem.current!.checked = allChecked;
+      });
   };
 
   const handleCheckboxChanged = (e: SyntheticEvent) => {

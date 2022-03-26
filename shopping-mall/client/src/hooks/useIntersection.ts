@@ -1,12 +1,6 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
-const useIntersection = (fetchMoreRef: MutableRefObject<HTMLDivElement>) => {
+const useIntersection = (fetchMoreRef: RefObject<HTMLElement>) => {
   const observerRef = useRef<IntersectionObserver>();
   const [intersecting, setIntersecting] = useState(false);
   const getObserver = useCallback(() => {
@@ -20,7 +14,7 @@ const useIntersection = (fetchMoreRef: MutableRefObject<HTMLDivElement>) => {
   }, [observerRef.current]);
 
   useEffect(() => {
-    getObserver().observe(fetchMoreRef.current);
+    if (fetchMoreRef.current) getObserver().observe(fetchMoreRef.current);
   }, [fetchMoreRef.current]);
   return intersecting;
 };

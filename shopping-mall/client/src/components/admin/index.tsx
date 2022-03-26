@@ -7,7 +7,7 @@ import AddForm from './addForm';
 import AdminList from './list';
 
 const Admin = () => {
-  const fetchMoreRef = useRef<HTMLDivElement>();
+  const fetchMoreRef = useRef<HTMLDivElement>(null);
   const intersecting = useIntersection(fetchMoreRef);
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
