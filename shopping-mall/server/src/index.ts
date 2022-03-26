@@ -23,7 +23,6 @@ import env from './envLoader';
       credentials: true,
     },
   });
-
   await app.listen({ port });
 
   console.log(`server listening on ${port}...`);
