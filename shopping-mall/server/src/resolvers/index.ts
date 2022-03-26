@@ -1,4 +1,4 @@
-import productResolver from './product'
-import cartResolver from './cart'
+import productResolver from './product';
+import cartResolver from './cart';
 
-export default [productResolver, cartResolver]
+export default [productResolver, cartResolver];

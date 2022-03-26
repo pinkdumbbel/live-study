@@ -14,7 +14,7 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../firebase';
 
 const PAGE_SIZE = 15;
 

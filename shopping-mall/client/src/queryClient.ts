@@ -23,36 +23,13 @@ export const getClient = (() => {
   };
 })();
 
-//const BASE_URL = 'https://fakestoreapi.com';
-const BASE_URL = 'http://localhost:8000/graphql';
-/* export const fetcher = async ({
-  method,
-  path,
-  body,
-  params,
-}: {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  path: string;
-  body?: AnyOBJ;
-  params?: AnyOBJ;
-}) => {
-  try {
-    const url = `${BASE_URL}${path}`;
-    console.log(url);
-    const fetchOptions: RequestInit = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': BASE_URL,
-      },
-    };
-    const res = await fetch(url, fetchOptions);
-    const json = await res.json();
-    return json;
-  } catch (e) {}
-}; */
+const BASE_URL = import.meta.env.VITE_SERVER_URL as string;
+
 export const graphqlFetcher = (query: RequestDocument, variables = {}) =>
-  request(BASE_URL, query, variables);
+  request(`${BASE_URL}/graphql`, query, variables, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': BASE_URL,
+  });
 export const QueryKeys = {
   PRODUCTS: 'PRODUCTS',
   CART: 'CART',
