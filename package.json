@@ -6,6 +6,9 @@
   "scripts": {
     "build": "cd shopping-mall/server/ && npm run serve"
   },
+  "engines": {
+    "node": "16.14.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pinkdumbbel/live-study.git"
