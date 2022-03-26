@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd shopping-mall/server/ && npm run serve"
+    "build": "cd shopping-mall/server/ && npm run serve"
   },
   "repository": {
     "type": "git",
