@@ -3,22 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "start": "cd shopping-mall/server/ && npm run serve"
-  },
   "engines": {
     "node": "16.14.0",
     "npm": "8.3.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pinkdumbbel/live-study.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pinkdumbbel/live-study/issues"
-  },
-  "homepage": "https://github.com/pinkdumbbel/live-study#readme"
+  "scripts": {
+    "start": "cd shopping-mall/server/ && npm run serve"
+  }
 }
