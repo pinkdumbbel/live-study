@@ -21,7 +21,7 @@
   },
   "scripts": {
     "dev": "nodemon --exec npx ts-node ./src/index.ts",
-    "tsc": "NODE_ENV=production tsc",
+    "tsc": "tsc",
     "build": "rm -rf dist && npm run tsc",
     "serve": "npm run build && cross-env NODE_ENV=production node ./dist/index.js"
   }
