@@ -20,9 +20,6 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "dev": "nodemon --exec npx ts-node ./src/index.ts",
-    "tsc": "./node_modules/.bin/tsc",
-    "build": "rm -rf dist && npm run tsc",
-    "serve": "npm run build && cross-env NODE_ENV=production node ./dist/index.js"
+    "serve": "cross-env NODE_ENV=production node ./dist/index.js"
   }
 }
