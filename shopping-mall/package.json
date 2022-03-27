@@ -1,0 +1,12 @@
+{
+  "name": "shopping-mall",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd server/ && npm run serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
