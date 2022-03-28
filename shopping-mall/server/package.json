@@ -23,6 +23,6 @@
     "node": "14.19.1"
   },
   "scripts": {
-    "serve": "npm i"
+    "start": "tsc"
   }
 }
