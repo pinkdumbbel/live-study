@@ -6,9 +6,6 @@
   "scripts": {
     "build": "cd server/ && npm run serve"
   },
-  "engines": {
-    "node": "16.x"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC"

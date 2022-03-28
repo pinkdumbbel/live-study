@@ -10,9 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/pinkdumbbel/live-study.git"
   },
-  "engines": {
-    "node": "16.x"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
