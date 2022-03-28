@@ -19,6 +19,9 @@
     "ts-node": "^10.7.0",
     "nodemon": "^2.0.15"
   },
+  "engines": {
+    "node": "14.19.1"
+  },
   "scripts": {
     "serve": "tsc && cross-env NODE_ENV=production node ./dist/index.js"
   }
