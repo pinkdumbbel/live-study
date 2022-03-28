@@ -21,5 +21,8 @@
   },
   "scripts": {
     "serve": "tsc && cross-env NODE_ENV=production node ./dist/index.js"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
