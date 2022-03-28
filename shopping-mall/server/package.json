@@ -23,6 +23,6 @@
     "node": "14.19.1"
   },
   "scripts": {
-    "serve": "tsc && cross-env NODE_ENV=production node ./dist/index.js"
+    "serve": "npm i"
   }
 }
