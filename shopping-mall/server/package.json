@@ -23,6 +23,8 @@
     "node": "14.19.1"
   },
   "scripts": {
-    "start": "tsc"
+    "dev": "nodemon --exec npx ts-node ./src/index.ts",
+    "buid": "rm -rf dist && tsc",
+    "start": "npm run build && cross-env NODE_ENV=production node ./dist/index.js"
   }
 }
