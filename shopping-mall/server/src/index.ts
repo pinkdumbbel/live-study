@@ -8,6 +8,7 @@ import env from './envLoader';
   const clientUrl = env.CLIENT_URL as string;
   const port = env.PORT || 8000;
 
+  console.log(clientUrl);
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
