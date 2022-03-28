@@ -1,8 +1,6 @@
 import request, { RequestDocument } from 'graphql-request';
 import { QueryClient } from 'react-query';
 
-type AnyOBJ = { [key: string]: any };
-
 export const getClient = (() => {
   let client: QueryClient | null = null;
   return () => {
@@ -24,6 +22,7 @@ export const getClient = (() => {
 })();
 
 const BASE_URL = import.meta.env.VITE_SERVER_URL as string;
+console.log(BASE_URL);
 
 export const graphqlFetcher = (query: RequestDocument, variables = {}) =>
   request(`${BASE_URL}/graphql`, query, variables, {
