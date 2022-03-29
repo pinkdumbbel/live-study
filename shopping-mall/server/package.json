@@ -20,7 +20,7 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "dev": "nodemon --exec npx ts-node ./src/index.ts",
+    "dev": "set NODE_ENV=development && nodemon --exec npx ts-node ./src/index.ts",
     "build": "rm -rf dist && tsc",
     "start": "npm run build && cross-env NODE_ENV=production node ./dist/index.js"
   }

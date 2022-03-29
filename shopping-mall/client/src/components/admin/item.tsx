@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import {
   DELETE_PRODUCT,
   ProductGraphql,
@@ -26,6 +26,8 @@ const AdminItem = ({
   setEditingIndex: () => void;
   doneEdit: () => void;
 }) => {
+  const [checkedCartItems, setCheckedCartItems] =
+    useRecoilState(checkedCartState);
   const queryClient = getClient();
 
   const { mutate: updateProduct } = useMutation(
@@ -61,6 +63,10 @@ const AdminItem = ({
     {
       //deleteProduct는 삭제된 상품의 id
       onSuccess: ({ deleteProduct }) => {
+        setCheckedCartItems(
+          checkedCartItems.filter((item) => item.product.id !== deleteProduct)
+        );
+
         queryClient.invalidateQueries(QueryKeys.PRODUCTS, {
           exact: false,
           refetchInactive: true,

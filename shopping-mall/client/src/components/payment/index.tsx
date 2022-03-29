@@ -7,7 +7,6 @@ import PaymentModal from './modal';
 import { useMutation } from 'react-query';
 import { graphqlFetcher } from '../../queryClient';
 import { DELETE_SUCCESS_PAYMENT_ITEMS } from '../../graphql/payment';
-import item from '../cart/item';
 
 const Payment = () => {
   const [checkedCartItems, setCheckedCartItems] =

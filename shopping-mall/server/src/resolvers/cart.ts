@@ -90,13 +90,15 @@ const cartResolver: Resolver = {
         const cartRef = doc(db, 'cart', id);
         const cartSnapshot = await getDoc(cartRef);
         const cartData = cartSnapshot.data();
+        if (!cartData?.product.createdAt) {
+          throw Error('결제상품중 삭제된 상품이 존재합니다.');
+        }
         const productRef = cartData?.product;
         if (!productRef) throw Error('상품정보가 없습니다.');
         const product = (await getDoc(productRef)).data() as Product;
         if (product.createdAt) {
           await deleteDoc(cartRef);
           deleted.push(id);
-        } else {
         }
       }
       return deleted;

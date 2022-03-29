@@ -8,7 +8,6 @@ import env from './envLoader';
   const clientUrl = env.CLIENT_URL as string;
   const port = env.PORT || 8000;
 
-  console.log(clientUrl);
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
@@ -16,6 +15,8 @@ import env from './envLoader';
 
   const app = express();
   await server.start();
+
+  console.log(clientUrl);
   server.applyMiddleware({
     app,
     path: '/graphql',

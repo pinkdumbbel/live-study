@@ -58,6 +58,7 @@ const CartList = ({ items }: { items: CartGraphql[] }) => {
   };
 
   useEffect(() => {
+    console.log(checkedCartItems);
     checkedCartItems.forEach((item) => {
       const itemRef = checkboxRefs.find(
         (ref) => item.id === ref.current?.dataset.id
